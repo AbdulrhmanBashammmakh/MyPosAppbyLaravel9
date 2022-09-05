@@ -49,9 +49,11 @@
           </select>
         </div>
 
-        <div class="col-12">
+        <div class="col-4">
+            <div  class = "row justify-content-center" >
           <button type="submit" class="btn btn-primary "> Create </button>
         </div>
+    </div>
       </form>
 
  </div>

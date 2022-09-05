@@ -55,6 +55,15 @@
     </div>
   </nav>
 </div>
+<br>
+
+    <br>
+    <form action= " {{route('pro.create')}} ">
+        <div  class = "row justify-content-center" >
+        <button class="btn btn-primary col-3" type="submit"> create </button>
+    </div>
+    </form>
+
 
 <div  class = "container">
     <table class="table caption-top">
@@ -91,7 +100,7 @@
                     <form action= " {{route('pro.destroy',$product->id)}} "> </form>
                     @csrf
                     @method('delete')
-                    <button type="submit" > delete</button>
+                    <button type="submit">delete</button>
                 </td>
               </tr>
  @endforeach
