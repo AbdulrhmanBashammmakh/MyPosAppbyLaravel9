@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Product;
+use App\Models\Unit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
@@ -11,11 +14,17 @@ class ProductController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
+
      */
-    public function index()
+
+public function __construct()
+{
+$this->middleware('auth');
+}
+     public function index()
     {
         //
-        $products =Product::with('user','category')->orderBy('id','desc')->paginate(15);
+        $products =Product::with('category')->orderBy('id','desc')->paginate(15);
         return view('pro.index')->with('products', $products);
 
        // return View('pro.index');
@@ -28,8 +37,9 @@ class ProductController extends Controller
      */
     public function create()
     {
-
-        return view('pro.create');
+        $cateq=Category::all();
+        $unt=Unit::all();
+        return view('pro.create')->with('cateq', $cateq)->with('unt', $unt);
 
     }
 
@@ -41,7 +51,32 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make(
+$request->all(),
+[
+    'name' =>'required',
+    'cata' =>'required',
+    'unit' =>'required',
+]
+        );
+if($validator->fails()){
+    return redirect()->back()->withErrors($validator)->withInput();
+}
+
+$data['name']=$request->name;
+$data['code']=$request->code;
+$data['barcode']=$request->barcode;
+$data['details']=$request->details;
+$data['cata_id']=$request->cata;
+$data['unit_id']=$request->unit;
+//$data['user_id']=auth()->id;
+
+    Product::create($data);
+    return redirect()->route('pro.index')->with([
+        'message' => 'created PRODUCT successfully',
+        'alert-type' => 'success'
+    ]);
+
     }
 
     /**

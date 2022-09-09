@@ -73,9 +73,18 @@
         </nav>
         <div class = "container">
         <main class="py-4">
+            @include('partial.flash')
             @yield('content')
         </main>
     </div>
     </div>
+
+    <script>
+$(function(){
+$('#alert-session').fadeTo(5000,500).slideUp(500,function(){
+    $(this).slideUp(500);
+});
+});
+    </script>
 </body>
 </html>
