@@ -80,11 +80,11 @@
     </div>
 
     <script>
-$(function(){
-$('#alert-session').fadeTo(5000,500).slideUp(500,function(){
-    $(this).slideUp(500);
-});
-});
+            $(function(){
+            $('#alert-session').fadeTo(5000,500).slideUp(500,function(){
+                $(this).slideUp(500);
+            });
+            });
     </script>
 </body>
 </html>

@@ -40,22 +40,7 @@
       </nav>
 </div>
 
-<div  class = "container">
-    <div class="collapse" id="navbarToggleExternalContent">
-    <div class="bg-dark p-4">
-      <h5 class="text-white h4">Collapsed content</h5>
-      <span class="text-muted">Toggleable via the navbar brand.</span>
-    </div>
-  </div>
-  <nav class="navbar navbar-dark bg-dark">
-    <div class="container-fluid">
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-    </div>
-  </nav>
-</div>
-<br>
+
 
     <br>
     <form action= " {{route('pro.create')}} ">
@@ -95,12 +80,17 @@
                 <td>{{ $product->category->cate }}</td>
 
                 <td>
-                    <a href="{{route('pro.show',$product->id)}}" >show</a>
-                    <a href=" {{route('pro.edit',$product->id)}} " >Update</a>
-                    <form action= " {{route('pro.destroy',$product->id)}} "> </form>
-                    @csrf
-                    @method('delete')
-                    <button type="submit">delete</button>
+
+                    <a href="{{route('pro.show',$product->id)}}"class="btn btn-success " >show</a>
+
+                    <a href=" {{route('pro.edit',$product->id)}} "class="btn btn-primary" >Update</a>
+
+                    <form action=" {{route('pro.destroy',$product->id)}} " method="POST" style="display: none">
+                        @csrf
+                        @method('DELETE')
+                    </form>
+                    <button type="submit" class="btn btn-danger ">Delete</button>
+
                 </td>
               </tr>
  @endforeach
@@ -109,5 +99,11 @@
       </table>
 
 </div>
+<div class="float-right">
+
+    {!! $products->links() !!}
+
+    </div>
+
 
 @endsection

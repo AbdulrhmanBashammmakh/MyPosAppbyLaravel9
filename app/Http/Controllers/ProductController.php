@@ -24,7 +24,7 @@ $this->middleware('auth');
      public function index()
     {
         //
-        $products =Product::with('category')->orderBy('id','desc')->paginate(15);
+        $products =Product::with('category')->orderBy('id','desc')->paginate(4);
         return view('pro.index')->with('products', $products);
 
        // return View('pro.index');
@@ -85,9 +85,9 @@ $data['unit_id']=$request->unit;
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public function show($id)
     {
-        //
+        return view('pro.show');
     }
 
     /**
@@ -96,10 +96,18 @@ $data['unit_id']=$request->unit;
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function edit(Product $product)
+    public function edit($id)
     {
-        //
-        return view('pro.edit')->with('product');
+        $product=Product::whereId($id)->first();
+        if( $product){
+            $cateq=Category::all();
+            $unt=Unit::all();
+            return view('pro.edit')->with('product',$product)->with('cateq', $cateq)->with('unt', $unt);;
+        }
+        return redirect()->route('pro.index')->with([
+            'message' => 'you can not access or not found',
+            'alert-type' => 'danger'
+        ]);
     }
 
     /**
@@ -109,9 +117,41 @@ $data['unit_id']=$request->unit;
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request, $id)
     {
-        //
+
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' =>'required',
+                'cata' =>'required',
+                'unit' =>'required',
+            ]
+                    );
+            if($validator->fails()){
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+            $product=Product::whereId($id)->first();
+            if($product){
+                $data['name']=$request->name;
+                $data['code']=$request->code;
+                $data['barcode']=$request->barcode;
+                $data['details']=$request->details;
+                $data['cata_id']=$request->cata;
+                $data['unit_id']=$request->unit;
+
+
+                   $product->update($data);
+                    return redirect()->route('pro.index')->with([
+                        'message' => 'update PRODUCT successfully',
+                        'alert-type' => 'success'
+                    ]);
+            }
+            return redirect()->route('pro.index')->with([
+                'message' => 'you have not premission for that',
+                'alert-type' => 'danger'
+            ]);
+
     }
 
     /**
@@ -120,8 +160,22 @@ $data['unit_id']=$request->unit;
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroy($id)
     {
-        //
+        $product=Product::whereId($id)->first();
+        if($product){
+          //  $product->delete();
+          $product->Delete();
+            return redirect()->route('pro.index')->with([
+                'message' => 'deleting is successfully',
+                'alert-type' => 'success'
+            ]);
+        }
+
+        return redirect()->route('pro.index')->with([
+            'message' => 'you have not premission for that',
+            'alert-type' => 'danger'
+        ]);
+
     }
 }

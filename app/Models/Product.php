@@ -24,4 +24,11 @@ return $this->belongsTo(Category::class,'cata_id','id');
     {
 return $this->belongsTo(Unit::class,'unit_id','id');
     }
+    /*
+    public function user(){
+
+        return $this->belongsTo(User::class, 'id');
+
+    }
+*/
 }
